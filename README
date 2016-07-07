@@ -1,0 +1,6 @@
+FEC (Forward Error Correction) parameters finder (using simulation) using Go Language.
+
+1. Naive model implementation with network simulation.
+    Network returns bool (true if packet was succesfully delivered to recipient) based on uniform distribution with pre-set loss percentage.
+
+
