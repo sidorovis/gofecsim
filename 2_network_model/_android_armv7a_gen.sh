@@ -13,7 +13,7 @@ then
 fi
 
 cd $BUILD_FOLDER
-cmake -DVERBOSE=OFF -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DCMAKE_TOOLCHAIN_FILE=./android-cmake/android.toolchain.cmake -DANDROID_ABI="armeabi-v7a" -DANDROID_NATIVE_API_LEVEL="android-21"  ../
+cmake -DVERBOSE=ON -DBOOST_HEADER_ONLY=ON -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DCMAKE_TOOLCHAIN_FILE=./android-cmake/android.toolchain.cmake -DANDROID_ABI="armeabi-v7a" -DANDROID_NATIVE_API_LEVEL="android-21"  ../
 # cmake --build .
 cd ../
 

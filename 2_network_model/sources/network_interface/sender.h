@@ -5,8 +5,6 @@
 #include <mutex>
 #include <condition_variable>
 
-#include <boost/asio.hpp>
-
 namespace fnm {
 
     class sender {
@@ -20,7 +18,6 @@ namespace fnm {
 	uint32_t nack_requests() const;
 	uint32_t sent_packets() const;
     private:
-	boost::asio::io_service _io_service;
 	const std::string _host, _port;
 
 	std::mutex _send_video_mutex;

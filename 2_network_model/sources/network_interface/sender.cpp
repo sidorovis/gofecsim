@@ -3,6 +3,7 @@
 #include "defines.h"
 
 #include <boost/bind.hpp>
+#include <boost/asio.hpp>
 
 fnm::sender::sender(const std::string& host, const std::string& port) 
     : _host( host )
@@ -18,6 +19,8 @@ fnm::sender::~sender() {
 
 void fnm::sender::send_video_stream(const uint32_t packets_to_send) {
     using boost::asio::ip::udp;
+    
+    boost::asio::io_service _io_service;
 
     udp::resolver resolver(_io_service);
     udp::resolver::query query(udp::v4(), _host, _port);
@@ -37,7 +40,7 @@ void fnm::sender::send_video_stream(const uint32_t packets_to_send) {
 	}
     } catch (...) {
     }
-    
+
     _send_video_finished.notify_one();
 
     local_socket.close();

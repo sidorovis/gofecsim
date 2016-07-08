@@ -13,6 +13,6 @@ then
 fi
 
 cd $BUILD_FOLDER
-cmake -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DVERBOSE=OFF -G "Unix Makefiles" ../ 
+cmake -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DBOOST_HEADER_ONLY=ON -DVERBOSE=OFF -G "Unix Makefiles" ../ 
 cd ../
 

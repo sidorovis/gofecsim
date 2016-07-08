@@ -5,6 +5,11 @@
 [+] : new feature
 
 
+ [00.00.00.02], (08-Jul-2016), Ivan Sidarau
+---------------------------------------------------------------------------
+[+] added boost implementation for sender (same thread)
+[+] added tests and android version support
+
  [00.00.00.01], (07-Jul-2016), Ivan Sidarau
 ---------------------------------------------------------------------------
 [+] project created

@@ -149,7 +149,14 @@ macro( compile_project project_name source_pattern header_pattern build_type sol
 			message(STATUS "   - Adding thread dependencie: '${${dependencie}_INCLUDE_DIRS}'")
 		endif(${VERBOSE})
 		include_directories( ${${dependencie}_INCLUDE_DIRS} )
-	endforeach( dependencie )	
+	endforeach( dependencie )
+	
+	if (BOOST_HEADER_ONLY AND ANDROID)
+		if (${VERBOSE})
+			message(STATUS "Adding local '/usr/include' as include directories.")
+		endif()
+		include_directories(SYSTEM "/usr/include")
+	endif()
 
 	if ("${build_type}" STREQUAL "STATIC")
 		add_library(${project_name} STATIC ${${project_name}_SOURCE_LIST} )
