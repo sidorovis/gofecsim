@@ -40,7 +40,7 @@ func (this FecModel) frame_was_received(required_packets int64, fec float64) (bo
 func (this FecModel) findKD() (float64, float64, float64, float64) {
 
     k_bf_values := [32] float64 { 0, 0.01, 0.02, 0.03, 0.04, 0.05, 0.07, 0.087, 0.1, 0.15, 0.2, 0.25, 0.26, 0.27, 0.28, 0.29, 0.3, 0.31, 0.32, 0.33, 0.34, 0.35, 0.38, 0.4, 0.42, 0.45, 0.50, 0.67, 0.8, 0.9, 1.0 } // percentage (1.0 == 100%), key frames FEC protection amount, for 5 packets will send 5 * (1+k) packets
-    d_bf_values := [32] float64 { 0, 0.01, 0.02, 0.03, 0.04, 0.05, 0.07, 0.087, 0.1, 0.15, 0.2, 0.25, 0.26, 0.27, 0.28, 0.29, 0.3, 0.31, 0.32, 0.33, 0.34, 0.35, 0.38, 0.4, 0.42, 0.45, 0.50, 0.67, 0.8, 0.9, 1.0 } // percentage (1.0 == 100%), delta frames FEC protection amount, for 5 packets will send 5 * (1+d) packets
+    d_bf_values := [17] float64 { 0, 0.1, 0.15, 0.2, 0.29, 0.3, 0.32, 0.35, 0.38, 0.4, 0.42, 0.45, 0.50, 0.67, 0.8, 0.9, 1.0 } // percentage (1.0 == 100%), delta frames FEC protection amount, for 5 packets will send 5 * (1+d) packets
 
     best_k := float64(0.0)
     best_d := float64(0.0)
@@ -121,8 +121,9 @@ func simulate(rtt int64, loss_pr float64, packetsPerK float64, packetsPerD float
 func main() {
     runtime.GOMAXPROCS(8)
 
-    rtt_bf_values := [1] int64 { 30 }
+    rtt_bf_values := [8] int64 { 210, 240, 270, 300, 330, 360, 390, 420}
     loss_pr_bf_values := [31] float64 { 0.0, 0.011, 0.016, 0.023, 0.029, 0.033, 0.039, 0.043, 0.047, 0.056, 0.066, 0.071, 0.078, 0.083, 0.092, 0.1, 0.12, 0.16, 0.19, 0.22, 0.24, 0.26, 0.29, 0.34, 0.38, 0.43, 0.49, 0.57, 0.8, 0.9, 1.0 }
+    packets_per_delta_frame_bf_values := [6] float64 { 2.0, 3.0, 4.0, 5.0, 6.0, 7.0 }
 
     f, err := os.Create("out.txt")
     if (err != nil) {
@@ -133,10 +134,11 @@ func main() {
 
     for _, rtt := range rtt_bf_values {
 	for _, loss_pr := range loss_pr_bf_values {
+	    for _, packetsPerDeltaFrame := range packets_per_delta_frame_bf_values {
 		var resultChan chan SimulateResult = make(chan SimulateResult)
-		simulations := int64(8)
+		simulations := int64(16)
 		for i := int64(0) ; i < simulations ; i++ {
-		    go simulate(rtt, loss_pr, 11.5, 4.54, resultChan)
+		    go simulate(rtt, loss_pr, 5.0 * packetsPerDeltaFrame, packetsPerDeltaFrame, resultChan)
 		}
 		summ_sr := SimulateResult{ 0.0, 0.0, 0.0, 0.0 }
 		actual_results := int64(0)
@@ -155,8 +157,8 @@ func main() {
 		summ_sr.loss_d /= float64(simulations)
 		
 		t := time.Now()
-		fmt.Fprintf(f, "%s | rtt %d\tloss_pr %f\t --> BestK: %f\tBestD: %f\t(LossK: %f, LossD:%f) ", 
-			t.String(), rtt, loss_pr, summ_sr.best_k, summ_sr.best_d, summ_sr.loss_k, summ_sr.loss_d )
+		fmt.Fprintf(f, "%s\t| rtt %d\tloss_pr %f ppDf %f\t --> BestK: %f\tBestD: %f\t(LossK: %f, LossD:%f) ", 
+			t.String(), rtt, loss_pr, packetsPerDeltaFrame, summ_sr.best_k, summ_sr.best_d, summ_sr.loss_k, summ_sr.loss_d )
 			
 		if (actual_results != simulations) {
 		    fmt.Fprintf(f, " Not all results were acquired\n")
@@ -164,6 +166,7 @@ func main() {
 		    fmt.Fprintf(f, "\n")
 		}
 		f.Sync()
+	    }
 	}
     }
 
