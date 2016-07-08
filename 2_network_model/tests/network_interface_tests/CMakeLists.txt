@@ -1,0 +1,5 @@
+compile_project( ${tests_name} "*.cpp" "*.h" BINARY tests ${module_name})
+if (ANDROID)
+    target_link_libraries( ${tests_name} log )
+endif(ANDROID)
+register_test( ${tests_name} 1.0 1.5 )

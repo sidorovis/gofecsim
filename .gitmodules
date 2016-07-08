@@ -1,0 +1,3 @@
+[submodule "2_network_model/android-cmake"]
+	path = 2_network_model/android-cmake
+	url = git@github.com:sidorovis/android-cmake.git

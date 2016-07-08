@@ -1,0 +1,11 @@
+# fec network model (fnm)
+
+[*] : some common changes
+[-] : delete bug
+[+] : new feature
+
+
+ [00.00.00.01], (07-Jul-2016), Ivan Sidarau
+---------------------------------------------------------------------------
+[+] project created
+[+] added network_interface static library module
