@@ -4,6 +4,7 @@
 #include <atomic>
 #include <mutex>
 #include <condition_variable>
+#include <thread>
 
 namespace fnm {
 
@@ -12,7 +13,8 @@ namespace fnm {
 	explicit sender(const std::string& host, const std::string& port);
 	~sender();
 	
-	void send_video_stream(const uint32_t packets_to_send);
+	void start_send_video_stream(const uint32_t packets_to_send);
+	void send_video_stream();
 	void wait();
 	
 	uint32_t nack_requests() const;
@@ -20,8 +22,11 @@ namespace fnm {
     private:
 	const std::string _host, _port;
 
+	std::thread _send_video_thread;
+
 	std::mutex _send_video_mutex;
-	std::condition_variable _send_video_finished;
+	volatile bool _video_sending;
+	std::condition_variable _send_video_started;
 	
 	std::atomic_uint_fast32_t _nack_requests;
 	uint32_t _packets_to_send;

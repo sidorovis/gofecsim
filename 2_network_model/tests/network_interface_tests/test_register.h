@@ -11,6 +11,7 @@ namespace fnm_tests {
 
     void sender_tests();
 
+    void receiver_tests();
 }
 
 #endif //_TEST_REGISTER_H_

@@ -11,7 +11,7 @@ namespace _fnm_test_ {
         try {
             method();
         } catch(const std::exception& e) {
-            std::cout << "Test failed: " << e.what() << std::endl;
+            std::cout << "Test failed, unexpected exception catched: " << e.what() << std::endl;
             return true;
         }
         catch(...) {
@@ -30,5 +30,6 @@ int main() {
     bool failed = false;
     TEST(failed, fnm_tests::rtp_packet_tests );
     TEST(failed, fnm_tests::sender_tests );
+    TEST(failed, fnm_tests::receiver_tests );
     return failed;
 }

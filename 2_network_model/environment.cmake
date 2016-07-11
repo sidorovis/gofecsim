@@ -99,9 +99,9 @@ if (BUILD_TESTS)
 endif (BUILD_TESTS)
 
 if (BOOST_HEADER_ONLY)
-    add_definitions(-DBOOST_ERROR_CODE_HEADER_ONLY)
-    add_definitions(-DBOOST_ASIO_HEADER_ONLY)
-    add_definitions(-DBOOST_ALL_NO_LIB)
+#    add_definitions(-DBOOST_ERROR_CODE_HEADER_ONLY)
+#    add_definitions(-DBOOST_ASIO_HEADER_ONLY)
+#    add_definitions(-DBOOST_ALL_NO_LIB)
 endif()
 
 if ( UNIX )

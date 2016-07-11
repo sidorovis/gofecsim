@@ -5,16 +5,32 @@
 
 namespace fnm {
 
-    struct rtp_packet {
+    template<uint32_t data_size>
+    class rtp_packet {
+    public:
 	uint32_t _header[6];
-	uint8_t *_data;
+	uint8_t _data[ data_size ];
 	
-	explicit rtp_packet(uint32_t length) {
-		_header[5] = length;
-		_data = new uint8_t[length];
+	explicit rtp_packet() {
+		_header[5] = data_size;
 	}
 	~rtp_packet() {
-		delete [] _data;
+	}
+	
+	void set_length(const uint32_t len) {
+	    _header[5] = len;
+	}
+
+	void set_sequence_number(const uint32_t sn) {
+	    _header[1] = sn;
+	}
+	
+	uint32_t get_length() const {
+	    return _header[5];
+	}
+
+	uint32_t get_sequence_number() const {
+	    return _header[1];
 	}
     };
 
